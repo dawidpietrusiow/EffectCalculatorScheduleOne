@@ -29,6 +29,13 @@ public class CalcUtils {
         }
         return null;
     }
+    static long findEffects (List<IngredientName> ingredientsNames) {
+        long effects = 0L;
+        for(IngredientName ingredientName : ingredientsNames) {
+            effects |= getUpdatedEffects(effects, IngredientsData.ingredients[ingredientName.ordinal()]);
+        }
+        return effects;
+    }
     static long getUpdatedEffects(long oldEffects, Ingredient ingredient) {
         List<Long> effectsFromRules = new LinkedList<>();
         for (Rule rule : ingredient.rules) {

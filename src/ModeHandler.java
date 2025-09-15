@@ -1,5 +1,5 @@
 public class ModeHandler {
-    Mode[] modes = {new IngredientsToEffects(), new EffectsToIngredients()};
+    Mode[] modes = {new IngredientsToEffects(), new EffectsToIngredients(), new ViewIngredients(), new ViewEffects()};
 
     void run() {
         while (true) {

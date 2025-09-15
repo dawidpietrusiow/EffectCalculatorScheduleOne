@@ -1,35 +1,35 @@
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InputOutput {
     public static final Scanner scanner = new Scanner(System.in);
 
-    static String getStringSequence(List<Ingredient> sequence, String separator) {
-        String result = sequence.stream()
-                .map(ing -> String.valueOf(ing.name).replace("_", " "))
+    static <E extends Enum<E>> String listToString(List<E> ingredients, String separator) {
+        String result = ingredients.stream()
+                .map(ing -> String.valueOf(ing).replace("_", " "))
                 .collect(Collectors.joining(separator));
         return result;
     }
-    static List<String> getStringEffects(long effectMask) {
-        List<String> effectsList = new LinkedList<>();
+    static String listToString(long effectMask, String separator) {
+        List<Effect> effectsList = new LinkedList<>();
         Effect[] effects = Effect.values();
         int index = 0;
 
         while (effectMask != 0 && index < effects.length) {
             if ((effectMask & 1L) != 0) {
-                effectsList.add(effects[index].name().replace("_", " "));
+                effectsList.add(effects[index]);
             }
             effectMask >>= 1;
             index++;
         }
 
-        return effectsList;
+        return listToString(effectsList, ", ");
     }
-    static List<String> getAllStringEffects() {
-        return getStringEffects(( (long) 1 << Effect.values().length) - 1); // Bitmask with all ones
+    static String getAllStringEffects() {
+        return listToString(( (long) 1 << Effect.values().length) - 1, ", "); // Bitmask with all ones
+    }
+    static String getAllStringIngredients() {
+        return listToString(Arrays.asList(IngredientName.values()), ", ");
     }
     static long getEffects() {
         long effects = 0L;
@@ -49,11 +49,33 @@ public class InputOutput {
                 }
             }
             if(!effectMatch) {
-                System.out.println("Invalid effect. Please choose an effect from the list.");
-                System.out.println("Available effects:\n" + String.join(", ", InputOutput.getAllStringEffects()) + "\n");
+                System.out.println("Invalid effect. Please try again.");
             }
         }
         return effects;
+    }
+    static List<IngredientName> getIngredients() {
+        List<IngredientName> ingredients = new LinkedList<>();
+
+        System.out.println("Enter each ingredient on a separate line\nConclude list with blank line:");
+        while (true) {
+            String line = InputOutput.scanner.nextLine().toUpperCase().trim().replaceAll("\\s+", "_");
+
+            if (line.isEmpty())
+                break;
+
+            boolean ingredientMatch = false;
+            for (IngredientName ingredient : IngredientName.values()) {
+                if(ingredient.toString().equals(line)) {
+                    ingredients.add(ingredient);
+                    ingredientMatch = true;
+                }
+            }
+            if(!ingredientMatch) {
+                System.out.println("Invalid ingredient. Please try again");
+            }
+        }
+        return ingredients;
     }
     static int getModeIndex(Mode[] modes) {
 
@@ -70,11 +92,36 @@ public class InputOutput {
                 if (modeNum <= 0 || modeNum > modes.length) {
                     throw new NumberFormatException();
                 }
+                System.out.println();
                 return modeNum - 1;
             }
             catch (NumberFormatException e) {
-                System.out.println("Invalid input");
+                System.out.println("Invalid input. Please try again");
             }
         }
+    }
+    static void displayResult(String body) {
+        System.out.println("-------------------------------------------------");
+        System.out.print(body);
+        InputOutput.scanner.nextLine();
+        System.out.println("-------------------------------------------------\n");
+    }
+    static void displayIngredientsToEffects(List<IngredientName> ingredients, long effects) {
+        String body =
+                "The result of " + InputOutput.listToString(ingredients, " -> ") + ":\n" +
+                InputOutput.listToString(effects, ", ");
+        displayResult(body);
+    }
+    static void displayEffectsToIngredients(List<IngredientName> ingredients, long effects) {
+        String body =
+                "The recipe for " + InputOutput.listToString(effects, ", ") + ":\n" +
+                InputOutput.listToString(ingredients, " -> ");
+        displayResult(body);
+    }
+    static void displayViewIngredients() {
+        displayResult(getAllStringIngredients());
+    }
+    static void displayViewEffects() {
+        displayResult(getAllStringEffects());
     }
 }

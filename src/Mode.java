@@ -13,7 +13,9 @@ class IngredientsToEffects extends Mode {
         super("Ingredients to Effects");
     }
     void run() {
-
+        List<IngredientName> ingredients = InputOutput.getIngredients();
+        long effects = CalcUtils.findEffects(ingredients);
+        InputOutput.displayIngredientsToEffects(ingredients, effects);
     }
 }
 class EffectsToIngredients extends Mode {
@@ -22,9 +24,23 @@ class EffectsToIngredients extends Mode {
     }
     void run() {
         long goalEffects = InputOutput.getEffects();
-        List<Ingredient> ingredientSequence = CalcUtils.findIngredients(goalEffects);
-        System.out.println("-----------------------------------------");
-        System.out.println("The recipe for " + String.join(", ", InputOutput.getStringEffects(goalEffects)) + ":");
-        System.out.println(InputOutput.getStringSequence(ingredientSequence, " -> "));
+        List<IngredientName> ingredients = IngredientUtils.getIngredientsNames(CalcUtils.findIngredients(goalEffects));
+        InputOutput.displayEffectsToIngredients(ingredients, goalEffects);
+    }
+}
+class ViewIngredients extends Mode {
+    ViewIngredients() {
+        super("View Ingredients");
+    }
+    void run() {
+        InputOutput.displayViewIngredients();
+    }
+}
+class ViewEffects extends Mode {
+    ViewEffects() {
+        super("View Effects");
+    }
+    void run() {
+        InputOutput.displayViewEffects();
     }
 }

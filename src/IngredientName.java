@@ -15,10 +15,4 @@ public enum IngredientName {
     IODINE,
     ADDY,
     HORSE_SEMEN;
-
-    public final long mask;
-
-    IngredientName() {
-        this.mask = 1L << this.ordinal();
-    }
 }
