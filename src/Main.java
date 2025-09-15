@@ -3,11 +3,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        long goalEffects = InputOutput.getGoalEffects();
-        List<Ingredient> ingredientSequence = CalcUtils.findIngredients(goalEffects);
-        System.out.println("-----------------------------------------");
-        System.out.println("The recipe for " + String.join(", ", InputOutput.getStringEffects(goalEffects)) + ":");
-        System.out.println(InputOutput.getStringSequence(ingredientSequence, " -> "));
+        new ModeHandler().run();
     }
 }
 
