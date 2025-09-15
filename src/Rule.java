@@ -17,7 +17,5 @@ class Rule {
             addMask |= addEffect.mask;
         }
         this.addMask = addMask;
-
-
     }
 }

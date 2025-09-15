@@ -12,20 +12,18 @@ public class InputOutput {
         return result;
     }
     static List<String> getStringEffects(long effectMask) {
-        //System.out.println("Effect mask: " + effectMask);
         List<String> effectsList = new LinkedList<>();
         Effect[] effects = Effect.values();
         int index = 0;
 
         while (effectMask != 0 && index < effects.length) {
-            if ((effectMask & 1L) != 0) {         // check if current bit is set
+            if ((effectMask & 1L) != 0) {
                 effectsList.add(effects[index].name().replace("_", " "));
             }
-            effectMask >>= 1;                     // shift mask to check next bit
+            effectMask >>= 1;
             index++;
         }
 
-        //System.out.println("Effects list: " + effectsList);
         return effectsList;
     }
     static List<String> getAllStringEffects() {
