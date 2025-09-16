@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Mode {
@@ -13,9 +15,16 @@ class IngredientsToEffects extends Mode {
         super("Ingredients to Effects");
     }
     void run() {
+        Drug drug = InputOutput.getDrugType();
+        if(drug == null)
+            return;
+
         List<IngredientName> ingredients = InputOutput.getIngredients();
-        long effects = CalcUtils.findEffects(ingredients);
-        InputOutput.displayIngredientsToEffects(ingredients, effects);
+        if(ingredients == null)
+            return;
+
+        long effects = CalcUtils.findEffects(ingredients, drug.mask);
+        InputOutput.displayIngredientsToEffects(drug, ingredients, effects);
     }
 }
 class EffectsToIngredients extends Mode {
@@ -23,9 +32,16 @@ class EffectsToIngredients extends Mode {
         super("Effects to Ingredients");
     }
     void run() {
+        Drug drug = InputOutput.getDrugType();
+        if(drug == null)
+            return;
+
         long goalEffects = InputOutput.getEffects();
-        List<IngredientName> ingredients = IngredientUtils.getIngredientsNames(CalcUtils.findIngredients(goalEffects));
-        InputOutput.displayEffectsToIngredients(ingredients, goalEffects);
+        if(goalEffects == -1)
+            return;
+
+        List<IngredientName> ingredients = IngredientUtils.getIngredientsNames(CalcUtils.findIngredients(goalEffects, drug.mask));
+        InputOutput.displayEffectsToIngredients(drug, ingredients, goalEffects);
     }
 }
 class ViewIngredients extends Mode {
@@ -33,7 +49,8 @@ class ViewIngredients extends Mode {
         super("View Ingredients");
     }
     void run() {
-        InputOutput.displayViewIngredients();
+        List<IngredientName> allIngredients = Arrays.asList(IngredientName.values());
+        InputOutput.displayViewAll(allIngredients);
     }
 }
 class ViewEffects extends Mode {
@@ -41,6 +58,16 @@ class ViewEffects extends Mode {
         super("View Effects");
     }
     void run() {
-        InputOutput.displayViewEffects();
+        List<Effect> allEffects = Arrays.asList(Effect.values());
+        InputOutput.displayViewAll(allEffects);
+    }
+}
+class ViewDrugs extends Mode {
+    ViewDrugs() {
+        super("View Drugs");
+    }
+    void run() {
+        List<Drug> allDrugs = Arrays.asList(Drug.values());
+        InputOutput.displayViewAll(allDrugs);
     }
 }

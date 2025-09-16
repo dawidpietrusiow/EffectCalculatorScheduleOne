@@ -3,10 +3,18 @@ import java.util.stream.Collectors;
 
 public class InputOutput {
     public static final Scanner scanner = new Scanner(System.in);
+    public static final long CONSOLE_WIDTH = 80;
+    public static final long CONSOLE_WRAP_WIDTH = CONSOLE_WIDTH - 10;
 
-    static <E extends Enum<E>> String listToString(List<E> ingredients, String separator) {
-        String result = ingredients.stream()
-                .map(ing -> String.valueOf(ing).replace("_", " "))
+    static <E extends Enum<E>> String enumToString(E value) {
+        return String.valueOf(value).replace("_", " ");
+    }
+
+    static <E extends Enum<E>> String listToString(List<E> values, String separator) {
+        if (values.isEmpty())
+            return "<nothing>";
+        String result = values.stream()
+                .map(val -> enumToString(val))
                 .collect(Collectors.joining(separator));
         return result;
     }
@@ -25,18 +33,15 @@ public class InputOutput {
 
         return listToString(effectsList, separator);
     }
-    static String getAllStringEffects() {
-        return listToString(( (long) 1 << Effect.values().length) - 1, ", "); // Bitmask with all ones
-    }
-    static String getAllStringIngredients() {
-        return listToString(Arrays.asList(IngredientName.values()), ", ");
-    }
     static long getEffects() {
         long effects = 0L;
 
-        System.out.println("Enter each goal effect on a separate line\nConclude list with blank line:");
+        System.out.println("\nEnter each goal effect on a separate line\nConclude list with blank line ('q' to quit to menu):");
         while (true) {
             String line = InputOutput.scanner.nextLine().toUpperCase().trim().replaceAll("\\s+", "_");
+
+            if ("Q".equals(line))
+                return -1;
 
             if (line.isEmpty())
                 break;
@@ -57,9 +62,12 @@ public class InputOutput {
     static List<IngredientName> getIngredients() {
         List<IngredientName> ingredients = new LinkedList<>();
 
-        System.out.println("Enter each ingredient on a separate line\nConclude list with blank line:");
+        System.out.println("\n('q' to exit)\nEnter each ingredient on a separate line\nConclude list with blank line:");
         while (true) {
             String line = InputOutput.scanner.nextLine().toUpperCase().trim().replaceAll("\\s+", "_");
+
+            if ("Q".equals(line))
+                return null;
 
             if (line.isEmpty())
                 break;
@@ -77,15 +85,34 @@ public class InputOutput {
         }
         return ingredients;
     }
+    static Drug getDrugType() {
+        System.out.println("\n('q' to exit)\nEnter drug type:");
+        while (true) {
+            String line = InputOutput.scanner.nextLine().toUpperCase().trim().replaceAll("\\s+", "_");
+
+            if("Q".equals(line))
+                return null;
+
+            boolean effectMatch = false;
+            for (Drug drug : Drug.values()) {
+                if(drug.toString().equals(line)) {
+                    return drug;
+                }
+            }
+            if(!effectMatch) {
+                System.out.println("Invalid drug type. Please try again.");
+            }
+        }
+    }
     static int getModeIndex(Mode[] modes) {
 
-        System.out.println("Enter mode number from list or empty line to exit");
+        System.out.println("\nEnter mode number from list or empty line to exit");
         for (int i = 0; i < modes.length; i++) {
             System.out.println((i + 1) + ": " + modes[i].name);
         }
         while (true) {
             String line = InputOutput.scanner.nextLine();
-            if (line.isEmpty())
+            if ("Q".toLowerCase().equals(line))
                 return -1;
             try {
                 int modeNum = Integer.parseInt(line);
@@ -100,28 +127,59 @@ public class InputOutput {
             }
         }
     }
-    static void displayResult(String body) {
-        System.out.println("-------------------------------------------------");
-        System.out.print(body);
-        InputOutput.scanner.nextLine();
-        System.out.println("-------------------------------------------------\n");
+    static String lineWrap(String text) {
+        int previousBlankIndex = 0;
+        String[] lines = text.split("\n");
+        for (int row = 0; row < lines.length; row++) {
+            for (int i = 0; i < lines[row].length(); i++) {
+                if (lines[row].charAt(i) == ' ')
+                    previousBlankIndex = i;
+                if ((i + 1) % CONSOLE_WRAP_WIDTH == 0)
+                    lines[row] = lines[row].substring(0, previousBlankIndex) + "\n" + lines[row].substring(previousBlankIndex + 1);
+            }
+        }
+        return String.join("\n", lines);
     }
-    static void displayIngredientsToEffects(List<IngredientName> ingredients, long effects) {
+    static void displayWithFrame(String body) {
+        int maxLength = 0;
+        //Find max line length
+        String[] lines = lineWrap(body).split("\n");
+        for (int i = 0; i < lines.length; i++) {
+            if(lines[i].length() > maxLength)
+                maxLength = lines[i].length();
+        }
+        //Add padding and side borders
+        for (int i = 0; i < lines.length; i++) {
+            lines[i] = "| " + lines[i] + " ".repeat(maxLength - lines[i].length()) + " |";
+        }
+        //Combine lines and add top and bottom border
+        String result =
+                "+" + "-".repeat(maxLength + 2) + "+\n" +
+                String.join("\n", lines) +
+                "\n+" + "-".repeat(maxLength + 2) + "+";
+        System.out.println(result);
+    }
+    static void displayIngredientsToEffects(Drug drug, List<IngredientName> ingredients, long effects) {
         String body =
-                "The result of " + InputOutput.listToString(ingredients, " -> ") + ":\n" +
+                "Mixing " + enumToString(drug) + " with " + InputOutput.listToString(ingredients, " -> ") + ":\n\n" +
                 InputOutput.listToString(effects, ", ");
-        displayResult(body);
+        displayWithFrame(body);
+        InputOutput.scanner.nextLine();
     }
-    static void displayEffectsToIngredients(List<IngredientName> ingredients, long effects) {
+    static void displayEffectsToIngredients(Drug drug, List<IngredientName> ingredients, long effects) {
         String body =
-                "The recipe for " + InputOutput.listToString(effects, ", ") + ":\n" +
+                "The recipe for " + enumToString(drug) + " to get " + InputOutput.listToString(effects, ", ") + ":\n\n" +
                 InputOutput.listToString(ingredients, " -> ");
-        displayResult(body);
+        displayWithFrame(body);
+        InputOutput.scanner.nextLine();
     }
-    static void displayViewIngredients() {
-        displayResult(getAllStringIngredients());
+    static <E extends Enum<E>> void displayViewAll(List<E> values) {
+        displayWithFrame(listToString(values, ", "));
+        InputOutput.scanner.nextLine();
     }
-    static void displayViewEffects() {
-        displayResult(getAllStringEffects());
+    static void displayWelcome() {
+        displayWithFrame("EFFECT CALCULATOR FOR SCHEDULE ONE");
+        System.out.println("* 'ENTER' for [SUBMIT] or [CONTINUE]");
+        System.out.println("* 'q' for [BACK TO MENU] or [EXIT]");
     }
 }

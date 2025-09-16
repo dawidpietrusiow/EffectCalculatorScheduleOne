@@ -3,18 +3,18 @@ import java.util.*;
 public class CalcUtils {
     static long MAX_EFFECTS = 8;
 
-    static List<Ingredient> findIngredients (long goalMask) {
+    static List<Ingredient> findIngredients (long goalEffects, long effects) {
         Queue<Recipe> queue = new LinkedList<>();
         Set<Long> visited = new HashSet<>();
 
-        Recipe start = new Recipe(0, new LinkedList<>());
+        Recipe start = new Recipe(effects, new LinkedList<>());
         queue.add(start);
         visited.add(start.effects);
 
         while (!queue.isEmpty()) {
             Recipe current = queue.poll();
 
-            if ((current.effects & goalMask) == goalMask) {
+            if ((current.effects & goalEffects) == goalEffects) {
                 return current.sequence;
             }
 
@@ -31,8 +31,7 @@ public class CalcUtils {
         }
         return null;
     }
-    static long findEffects (List<IngredientName> ingredientsNames) {
-        long effects = 0L;
+    static long findEffects (List<IngredientName> ingredientsNames, long effects) {
         for(IngredientName ingredientName : ingredientsNames) {
             effects = getUpdatedEffects(effects, IngredientsData.ingredients[ingredientName.ordinal()]);
         }
@@ -49,7 +48,6 @@ public class CalcUtils {
         long newEffects = oldEffects | effectsFromRules.stream().reduce(0L, (a, b) -> a | b);
         if (getEffectsCount(newEffects) < MAX_EFFECTS)    // Effects are capped at MAX_EFFECTS, and can then only be replaced
             newEffects |= ingredient.baseMask;
-        System.out.println(InputOutput.listToString(newEffects, ", "));
         return newEffects;
     }
     static long getEffectsCount(long effects) {
