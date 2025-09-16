@@ -23,7 +23,7 @@ public class InputOutput {
             index++;
         }
 
-        return listToString(effectsList, ", ");
+        return listToString(effectsList, separator);
     }
     static String getAllStringEffects() {
         return listToString(( (long) 1 << Effect.values().length) - 1, ", "); // Bitmask with all ones
