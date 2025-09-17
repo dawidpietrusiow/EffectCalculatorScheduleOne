@@ -1,6 +1,7 @@
 public class IngredientsData {
     static Ingredient[] ingredients = {
             new Ingredient(IngredientName.CUKE, Effect.ENERGIZING, new Rule[]{
+                    new Rule(Effect.GINGERITIS, new Effect[]{Effect.GINGERITIS}, new Effect[]{Effect.THOUGHT_PROVOKING}),
                     new Rule(Effect.SNEAKY, new Effect[]{Effect.SNEAKY}, new Effect[]{Effect.PARANOIA}),
                     new Rule(Effect.TOXIC, new Effect[]{Effect.TOXIC}, new Effect[]{Effect.EUPHORIC}), //Also laxative???
                     new Rule(Effect.SLIPPERY, new Effect[]{Effect.SLIPPERY}, new Effect[]{Effect.MUNCHIES}),
