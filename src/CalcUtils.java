@@ -4,12 +4,12 @@ public class CalcUtils {
     static long MAX_EFFECTS = 8;
 
     static List<Ingredient> findIngredients (long goalEffects, long effects) {
-        Queue<Recipe> queue = new LinkedList<>();
-        Set<Long> visited = new HashSet<>();
+        PriorityQueue<Recipe> queue = new PriorityQueue<>(Comparator.comparingInt(r -> r.pathScore));
+        Map<Long, Integer> bestCost = new HashMap<>();
 
-        Recipe start = new Recipe(effects, new LinkedList<>());
+        Recipe start = new Recipe(effects, new LinkedList<>(), 0, 0);
         queue.add(start);
-        visited.add(start.effects);
+        bestCost.put(start.effects, 0);
 
         while (!queue.isEmpty()) {
             Recipe current = queue.poll();
@@ -20,12 +20,15 @@ public class CalcUtils {
 
             for (Ingredient ingredient : IngredientsData.ingredients) {
                 long newEffects = CalcUtils.getUpdatedEffects(current.effects, ingredient);
+                int pathCost = current.pathCost + 1;
+                int pathLeft = Long.bitCount(goalEffects & ~newEffects);
 
-                if (!visited.contains(newEffects)) {
+                if (!bestCost.containsKey(newEffects) || pathCost < bestCost.get(newEffects)) {
                     List<Ingredient> newSequence = new LinkedList<>(current.sequence);
                     newSequence.add(ingredient);
-                    queue.add(new Recipe(newEffects, newSequence));
-                    visited.add(newEffects);
+                    Recipe nextRecipe = new Recipe(newEffects, newSequence, pathCost, pathCost + pathLeft);
+                    queue.add(nextRecipe);
+                    bestCost.put(newEffects, pathCost);
                 }
             }
         }
