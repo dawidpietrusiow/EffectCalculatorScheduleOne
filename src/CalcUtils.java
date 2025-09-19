@@ -41,14 +41,20 @@ public class CalcUtils {
         return effects;
     }
     static long getUpdatedEffects(long oldEffects, Ingredient ingredient) {
-        List<Long> effectsFromRules = new LinkedList<>();
-        for (Rule rule : ingredient.rules) {
-            if ((rule.effectMask & oldEffects) != 0L) {
-                oldEffects &= ~rule.removeMask;
-                effectsFromRules.add(rule.addMask);
+        long newEffects = oldEffects;
+        boolean changed;
+        do {
+            changed = false;
+            for (Rule rule : ingredient.rules) {
+                if ((rule.effectMask & oldEffects) != 0L && (rule.addMask & newEffects) == 0L){
+                    newEffects &= ~rule.removeMask;
+                    newEffects |= rule.addMask;
+                    changed = true;
+                }
             }
-        }
-        long newEffects = oldEffects | effectsFromRules.stream().reduce(0L, (a, b) -> a | b);
+
+        } while (changed);
+
         if (getEffectsCount(newEffects) < MAX_EFFECTS)    // Effects are capped at MAX_EFFECTS, and can then only be replaced
             newEffects |= ingredient.baseMask;
         return newEffects;
