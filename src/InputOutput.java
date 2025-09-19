@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class InputOutput {
@@ -62,7 +64,7 @@ public class InputOutput {
     static List<IngredientName> getIngredients() {
         List<IngredientName> ingredients = new LinkedList<>();
 
-        System.out.println("\n('q' to exit)\nEnter each ingredient on a separate line\nConclude list with blank line:");
+        System.out.println("\nEnter each ingredient on a separate line:");
         while (true) {
             String line = InputOutput.scanner.nextLine().toUpperCase().trim().replaceAll("\\s+", "_");
 
@@ -86,7 +88,7 @@ public class InputOutput {
         return ingredients;
     }
     static Drug getDrugType() {
-        System.out.println("\n('q' to exit)\nEnter drug type:");
+        System.out.println("\nEnter drug type:");
         while (true) {
             String line = InputOutput.scanner.nextLine().toUpperCase().trim().replaceAll("\\s+", "_");
 
@@ -106,7 +108,7 @@ public class InputOutput {
     }
     static int getModeIndex(Mode[] modes) {
 
-        System.out.println("\nEnter mode number from list or empty line to exit");
+        System.out.println("\nEnter mode number from menu");
         for (int i = 0; i < modes.length; i++) {
             System.out.println((i + 1) + ": " + modes[i].name);
         }
@@ -128,17 +130,30 @@ public class InputOutput {
         }
     }
     static String lineWrap(String text) {
-        int previousBlankIndex = 0;
+        StringBuilder sb = new StringBuilder();
         String[] lines = text.split("\n");
-        for (int row = 0; row < lines.length; row++) {
-            for (int i = 0; i < lines[row].length(); i++) {
-                if (lines[row].charAt(i) == ' ')
-                    previousBlankIndex = i;
-                if ((i + 1) % CONSOLE_WRAP_WIDTH == 0)
-                    lines[row] = lines[row].substring(0, previousBlankIndex) + "\n" + lines[row].substring(previousBlankIndex + 1);
+        for (String line : lines) {
+            List<Integer> breakPoints = findBreakPoints(line);
+            int lastBreakPoint = 0;
+            for (int i = 0; i < breakPoints.size() - 1; i++) {
+                int currentBreakPoint = breakPoints.get(i);
+                int nextBreakPoint = breakPoints.get(i + 1);
+                if (nextBreakPoint - lastBreakPoint > CONSOLE_WRAP_WIDTH) {
+                    sb.append(line.substring(lastBreakPoint, currentBreakPoint)).append("\n");
+                    lastBreakPoint = currentBreakPoint;
+                }
             }
+            sb.append(line.substring(lastBreakPoint)).append("\n");
         }
-        return String.join("\n", lines);
+        return sb.toString();
+    }
+    static List<Integer> findBreakPoints(String line) {
+        List<Integer> breakPoints = new LinkedList<>();
+        Pattern pattern = Pattern.compile("[^A-Za-z\\s]\\s+");
+        Matcher matcher = pattern.matcher(line);
+        while (matcher.find())
+            breakPoints.add(matcher.end());
+        return breakPoints;
     }
     static void displayWithFrame(String body) {
         int maxLength = 0;
@@ -161,14 +176,14 @@ public class InputOutput {
     }
     static void displayIngredientsToEffects(Drug drug, List<IngredientName> ingredients, long effects) {
         String body =
-                "Mixing " + enumToString(drug) + " with " + InputOutput.listToString(ingredients, " -> ") + ":\n\n" +
+                "Mixing " + enumToString(drug) + " with\n" + InputOutput.listToString(ingredients, " -> ") + ":\n\n" +
                 InputOutput.listToString(effects, ", ");
         displayWithFrame(body);
         InputOutput.scanner.nextLine();
     }
     static void displayEffectsToIngredients(Drug drug, List<IngredientName> ingredients, long effects) {
         String body =
-                "The recipe for " + enumToString(drug) + " to get " + InputOutput.listToString(effects, ", ") + ":\n\n" +
+                "The recipe for " + enumToString(drug) + " to get\n" + InputOutput.listToString(effects, ", ") + ":\n\n" +
                 InputOutput.listToString(ingredients, " -> ");
         displayWithFrame(body);
         InputOutput.scanner.nextLine();

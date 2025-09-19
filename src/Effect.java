@@ -17,7 +17,7 @@ public enum Effect {
     LONG_FACED,
     CALMING,
     REFRESHING,
-    ANTI_GRAV,
+    ANTI_GRAVITY,
     GLOWING,
     PARANOIA,
     EUPHORIC,

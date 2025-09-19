@@ -3,7 +3,7 @@ public enum Drug {
     SOUR_DIESEL(Effect.REFRESHING.mask),
     GREEN_CRACK(Effect.ENERGIZING.mask),
     GRANDDADDY_PURPLE(Effect.SEDATING.mask),
-    METHAMPHETAMINE(0L), // No effect
+    METH(0L), // No effect
     COCAINE(0L);         // No effect
 
     public final long mask;

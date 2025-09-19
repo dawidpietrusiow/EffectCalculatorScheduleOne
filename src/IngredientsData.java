@@ -18,7 +18,7 @@ public class IngredientsData {
                     new Rule(Effect.FOCUSED, new Effect[]{Effect.FOCUSED}, new Effect[]{Effect.SEIZURE_INDUCING}),
                     new Rule(Effect.LONG_FACED, new Effect[]{Effect.LONG_FACED}, new Effect[]{Effect.REFRESHING}),
                     new Rule(Effect.PARANOIA, new Effect[]{Effect.PARANOIA}, new Effect[]{Effect.JENNERISING}),
-                    new Rule(Effect.SMELLY, new Effect[]{Effect.SMELLY}, new Effect[]{Effect.ANTI_GRAV}),
+                    new Rule(Effect.SMELLY, new Effect[]{Effect.SMELLY}, new Effect[]{Effect.ANTI_GRAVITY}),
                     new Rule(Effect.TOXIC, new Effect[]{Effect.TOXIC}, new Effect[]{Effect.SMELLY}),
             }
             ),
@@ -29,7 +29,7 @@ public class IngredientsData {
                     new Rule(Effect.FOCUSED, new Effect[]{Effect.FOCUSED}, new Effect[]{Effect.GINGERITIS}),
                     new Rule(Effect.FOGGY, new Effect[]{Effect.FOGGY}, new Effect[]{Effect.CALMING}),
                     new Rule(Effect.GLOWING, new Effect[]{Effect.GLOWING}, new Effect[]{Effect.TOXIC}),
-                    new Rule(Effect.MUNCHIES, new Effect[]{Effect.MUNCHIES}, new Effect[]{Effect.ANTI_GRAV}),
+                    new Rule(Effect.MUNCHIES, new Effect[]{Effect.MUNCHIES}, new Effect[]{Effect.ANTI_GRAVITY}),
                     new Rule(Effect.PARANOIA, new Effect[]{Effect.PARANOIA}, new Effect[]{Effect.BALDING}),
                     new Rule(Effect.SPICY, new Effect[]{Effect.SPICY}, new Effect[]{Effect.BRIGHT_EYED}),
                     new Rule(Effect.TOXIC, new Effect[]{Effect.TOXIC}, new Effect[]{Effect.TROPIC_THUNDER}),
@@ -37,7 +37,7 @@ public class IngredientsData {
             }
             ),
             new Ingredient(IngredientName.DONUT, Effect.CALORIE_DENSE, new Rule[]{
-                    new Rule(Effect.ANTI_GRAV, new Effect[]{Effect.ANTI_GRAV}, new Effect[]{Effect.SLIPPERY}),
+                    new Rule(Effect.ANTI_GRAVITY, new Effect[]{Effect.ANTI_GRAVITY}, new Effect[]{Effect.SLIPPERY}),
                     new Rule(Effect.BALDING, new Effect[]{Effect.BALDING}, new Effect[]{Effect.SNEAKY}),
                     new Rule(Effect.CALORIE_DENSE, new Effect[]{}, new Effect[]{Effect.EXPLOSIVE}),
                     new Rule(Effect.FOCUSED, new Effect[]{Effect.FOCUSED}, new Effect[]{Effect.EUPHORIC}),
@@ -55,7 +55,7 @@ public class IngredientsData {
             }
             ),
             new Ingredient(IngredientName.MOUTH_WASH, Effect.BALDING, new Rule[]{
-                    new Rule(Effect.CALMING, new Effect[]{Effect.CALMING}, new Effect[]{Effect.ANTI_GRAV}),
+                    new Rule(Effect.CALMING, new Effect[]{Effect.CALMING}, new Effect[]{Effect.ANTI_GRAVITY}),
                     new Rule(Effect.CALORIE_DENSE, new Effect[]{Effect.CALORIE_DENSE}, new Effect[]{Effect.SNEAKY}),
                     new Rule(Effect.EXPLOSIVE, new Effect[]{Effect.EXPLOSIVE}, new Effect[]{Effect.SEDATING}),
                     new Rule(Effect.FOCUSED, new Effect[]{Effect.FOCUSED}, new Effect[]{Effect.JENNERISING}),
@@ -105,7 +105,7 @@ public class IngredientsData {
                     new Rule(Effect.EUPHORIC, new Effect[]{Effect.EUPHORIC}, new Effect[]{Effect.SEDATING}),
                     new Rule(Effect.FOGGY, new Effect[]{Effect.FOGGY}, new Effect[]{Effect.TOXIC}),
                     new Rule(Effect.MUNCHIES, new Effect[]{Effect.MUNCHIES}, new Effect[]{Effect.SCHIZOPHRENIC}),
-                    new Rule(Effect.PARANOIA, new Effect[]{Effect.PARANOIA}, new Effect[]{Effect.ANTI_GRAV}),
+                    new Rule(Effect.PARANOIA, new Effect[]{Effect.PARANOIA}, new Effect[]{Effect.ANTI_GRAVITY}),
             }
             ),
             new Ingredient(IngredientName.MEGA_BEAN, Effect.FOGGY, new Rule[]{
@@ -122,7 +122,7 @@ public class IngredientsData {
             }
             ),
             new Ingredient(IngredientName.CHILI, Effect.SPICY, new Rule[]{
-                    new Rule(Effect.ANTI_GRAV, new Effect[]{Effect.ANTI_GRAV}, new Effect[]{Effect.TROPIC_THUNDER}),
+                    new Rule(Effect.ANTI_GRAVITY, new Effect[]{Effect.ANTI_GRAVITY}, new Effect[]{Effect.TROPIC_THUNDER}),
                     new Rule(Effect.ATHLETIC, new Effect[]{Effect.ATHLETIC}, new Effect[]{Effect.EUPHORIC}),
                     new Rule(Effect.LAXATIVE, new Effect[]{Effect.LAXATIVE}, new Effect[]{Effect.LONG_FACED}),
                     new Rule(Effect.MUNCHIES, new Effect[]{Effect.MUNCHIES}, new Effect[]{Effect.TOXIC}),
@@ -157,7 +157,7 @@ public class IngredientsData {
             }
             ),
             new Ingredient(IngredientName.HORSE_SEMEN, Effect.LONG_FACED, new Rule[]{
-                    new Rule(Effect.ANTI_GRAV, new Effect[]{Effect.ANTI_GRAV}, new Effect[]{Effect.CALMING}),
+                    new Rule(Effect.ANTI_GRAVITY, new Effect[]{Effect.ANTI_GRAVITY}, new Effect[]{Effect.CALMING}),
                     new Rule(Effect.GINGERITIS, new Effect[]{Effect.GINGERITIS}, new Effect[]{Effect.REFRESHING}),
                     new Rule(Effect.SEIZURE_INDUCING, new Effect[]{Effect.SEIZURE_INDUCING}, new Effect[]{Effect.ENERGIZING}),
                     new Rule(Effect.THOUGHT_PROVOKING, new Effect[]{Effect.THOUGHT_PROVOKING}, new Effect[]{Effect.ELECTRIFYING}),
