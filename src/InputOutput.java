@@ -48,6 +48,11 @@ public class InputOutput {
             if (line.isEmpty())
                 break;
 
+            if (Long.bitCount(effects) >= CalcUtils.MAX_EFFECTS) {
+                System.out.println("Maximum number of " + CalcUtils.MAX_EFFECTS + " effects already reached.");
+                continue;
+            }
+
             boolean effectMatch = false;
             for (Effect effect : Effect.values()) {
                 if(effect.toString().equals(line)) {

@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class CalcUtils {
-    static long MAX_EFFECTS = 8;
+    static final long MAX_EFFECTS = 8;
 
     static List<Ingredient> findIngredients (long goalEffects, long effects) {
         PriorityQueue<Recipe> queue = new PriorityQueue<>(Comparator.comparingInt(r -> r.pathScore));
@@ -52,7 +52,6 @@ public class CalcUtils {
                     changed = true;
                 }
             }
-
         } while (changed);
 
         if (getEffectsCount(newEffects) < MAX_EFFECTS)    // Effects are capped at MAX_EFFECTS, and can then only be replaced
